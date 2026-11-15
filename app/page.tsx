@@ -121,74 +121,11 @@ export default function Home() {
         </div>
 
         <div className="hero-visual">
-  <div className="hero-photo">
-    <img
-      src="/images/classbridge-classroom-hero.webp"
-      alt="Nigerian students collaborating and learning together in a classroom"
-    />
-  </div>
-</div>
-
-            <div className="preview-body">
-              <div className="preview-sidebar">
-                <div className="preview-mark">C</div>
-                <span className="preview-active">▦</span>
-                <span>♙</span>
-                <span>♧</span>
-                <span>▤</span>
-                <span>⚙</span>
-              </div>
-
-              <div className="preview-content">
-                <h3>School Overview</h3>
-                <p>Your school at a glance</p>
-
-                <div className="preview-stats">
-                  <div>
-                    <small>Students</small>
-                    <strong>1,284</strong>
-                  </div>
-                  <div>
-                    <small>Teachers</small>
-                    <strong>64</strong>
-                  </div>
-                </div>
-
-                <div className="preview-chart">
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                </div>
-
-                <div className="preview-message">
-                  <span>✦</span>
-                  <div>
-                    <strong>CLASSBRIDGE AI</strong>
-                    <small>Smarter teaching starts here.</small>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="floating-card floating-one">
-            <span>✓</span>
-            <div>
-              <strong>Connected</strong>
-              <small>School community</small>
-            </div>
-          </div>
-
-          <div className="floating-card floating-two">
-            <span>✦</span>
-            <div>
-              <strong>Powered by AI</strong>
-              <small>Intelligent learning</small>
-            </div>
+          <div className="hero-photo">
+            <img
+              src="/images/classbridge-classroom-hero.webp"
+              alt="Nigerian students collaborating and learning together in a classroom"
+            />
           </div>
         </div>
       </section>
