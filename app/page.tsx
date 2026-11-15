@@ -121,17 +121,13 @@ export default function Home() {
         </div>
 
         <div className="hero-visual">
-          <div className="visual-glow" />
-
-          <div className="preview-window">
-            <div className="preview-top">
-              <div className="preview-dots">
-                <i />
-                <i />
-                <i />
-              </div>
-              <span>CLASSBRIDGE Dashboard</span>
-            </div>
+  <div className="hero-photo">
+    <img
+      src="/images/classbridge-classroom-hero.webp"
+      alt="Nigerian students collaborating and learning together in a classroom"
+    />
+  </div>
+</div>
 
             <div className="preview-body">
               <div className="preview-sidebar">
