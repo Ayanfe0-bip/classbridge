@@ -1526,3 +1526,249 @@ a {
     border-radius: 18px;
   }
 }
+/* =====================================
+   CLASSBRIDGE AUTHENTICATION PAGES
+===================================== */
+
+.auth-page {
+  min-height: 100vh;
+  padding: 35px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 10% 10%, #e5efff, transparent 35%),
+    linear-gradient(135deg, #f8faff, #edf3fc);
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 490px;
+  padding: 38px;
+  background: #ffffff;
+  border: 1px solid #e7edf6;
+  border-radius: 20px;
+  box-shadow: 0 20px 65px rgba(25, 65, 120, 0.09);
+}
+
+.auth-brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 38px;
+  color: #10213d;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.auth-brand > span:last-child > span {
+  color: #1769e0;
+}
+
+.auth-logo {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  background: #1769e0;
+  color: #ffffff;
+  font-size: 21px;
+  font-weight: 800;
+}
+
+.auth-heading {
+  margin-bottom: 27px;
+}
+
+.auth-label {
+  display: block;
+  margin-bottom: 12px;
+  color: #1769e0;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+}
+
+.auth-heading h1,
+.auth-success h1 {
+  color: #10213d;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 27px;
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: -0.8px;
+}
+
+.auth-heading p,
+.auth-success > p {
+  margin-top: 10px;
+  color: #8290a5;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.auth-form label {
+  margin-top: 8px;
+  color: #26364d;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.auth-form input,
+.auth-form select {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+  border: 1px solid #e1e8f2;
+  border-radius: 9px;
+  outline: none;
+  background: #fbfcff;
+  color: #26364d;
+  font-size: 12px;
+  transition: 0.2s ease;
+}
+
+.auth-form input:focus,
+.auth-form select:focus {
+  border-color: #1769e0;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(23, 105, 224, 0.09);
+}
+
+.auth-form input::placeholder {
+  color: #a6b0bf;
+}
+
+.auth-primary-button {
+  width: 100%;
+  min-height: 48px;
+  margin-top: 13px;
+  padding: 13px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 9px;
+  background: #1769e0;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 800;
+  text-align: center;
+  transition: 0.2s ease;
+}
+
+.auth-primary-button:hover {
+  background: #1052b5;
+  transform: translateY(-1px);
+}
+
+.auth-primary-button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.auth-switch {
+  margin-top: 23px;
+  color: #8290a5;
+  font-size: 11px;
+  text-align: center;
+}
+
+.auth-switch a {
+  color: #1769e0;
+  font-weight: 800;
+}
+
+.auth-switch a:hover {
+  text-decoration: underline;
+}
+
+.auth-legal {
+  margin-top: 25px;
+  padding-top: 18px;
+  border-top: 1px solid #edf0f5;
+  color: #9ba7b8;
+  font-size: 10px;
+  line-height: 1.8;
+  text-align: center;
+}
+
+.auth-hint {
+  padding: 12px 14px;
+  border: 1px solid #dceaff;
+  border-radius: 9px;
+  background: #f0f6ff;
+  color: #58739a;
+  font-size: 10px;
+  line-height: 1.7;
+}
+
+.auth-error {
+  padding: 12px 14px;
+  border: 1px solid #f5cccc;
+  border-radius: 9px;
+  background: #fff2f2;
+  color: #bd3e45;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.auth-success {
+  text-align: center;
+}
+
+.auth-success .auth-logo {
+  margin: 0 auto 25px;
+}
+
+.auth-success-icon {
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 20px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #e7f8f0;
+  color: #159b69;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.auth-success .auth-small {
+  margin: 18px 0;
+  padding: 13px;
+  border-radius: 9px;
+  background: #f4f7fc;
+  font-size: 11px;
+}
+
+@media (max-width: 520px) {
+  .auth-page {
+    padding: 18px 12px;
+    align-items: flex-start;
+  }
+
+  .auth-card {
+    margin-top: 15px;
+    padding: 27px 21px;
+    border-radius: 15px;
+  }
+
+  .auth-brand {
+    margin-bottom: 30px;
+  }
+
+  .auth-heading h1,
+  .auth-success h1 {
+    font-size: 24px;
+  }
+}
