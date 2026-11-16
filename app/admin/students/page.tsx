@@ -359,9 +359,8 @@ async function updateStudentStatus(
 }
 async function deleteStudent(student: Student) {
 const confirmed = window.confirm(
-"Mark ${student.first_name} ${student.last_name} as withdrawn? Their records and photograph will be preserved."
-);
-
+`Mark ${student.first_name} ${student.last_name} as withdrawn? Their records and photograph will be preserved.`
+    }
 if (!confirmed) return;
 
 setError("");
