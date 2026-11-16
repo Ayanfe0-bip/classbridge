@@ -30,6 +30,7 @@ class_name: string | null;
 class_id: string | null;
 photo_url: string | null;
 created_at: string;
+status: string;
 };
 
 const initialForm = {
@@ -55,6 +56,7 @@ const [photo, setPhoto] = useState<File | null>(null);
 const [editingId, setEditingId] = useState("");
 const [search, setSearch] = useState("");
 const [classFilter, setClassFilter] = useState("all");
+const [statusFilter, setStatusFilter] = useState("active");
 const [loading, setLoading] = useState(true);
 const [saving, setSaving] = useState(false);
 const [error, setError] = useState("");
@@ -180,12 +182,12 @@ return students.filter((s) => {
     (s.admission_number || "").toLowerCase().includes(term);
 
   return (
-    matchesText &&
-    (classFilter === "all" || s.class_id === classFilter)
-  );
-});
+  matchesText &&
+  (classFilter === "all" || s.class_id === classFilter) &&
+  (statusFilter === "all" || s.status === statusFilter)
+);
 
-}, [students, search, classFilter]);
+}, [students, search, classFilter, statusFilter]);
 
 function resetForm() {
 setForm(initialForm);
