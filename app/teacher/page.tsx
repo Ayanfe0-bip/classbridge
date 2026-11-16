@@ -114,7 +114,7 @@ const supabase = createClient();
 
     if (availableSchools.length > 0) {
       setSchoolId(availableSchools[0].id);
-      setSchoolName(availableschool.school_name);
+      setSchoolName(availableSchools[0].school_name);
     } else {
       setError("We couldn't find your school workspace.");
     }
@@ -219,7 +219,7 @@ const selectedSchool = schools.find(
 );
 
 setSchoolId(id);
-setSchoolName(selectedschool.school_name || "");
+setSchoolName(selectedSchool.school_name || "");
 
 }
 
