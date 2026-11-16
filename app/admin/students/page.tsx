@@ -389,7 +389,7 @@ e instanceof Error
 );
 }
 }
-const function changeSchool(id: string) {
+ function changeSchool(id: string) {
 const selected = schools.find((s) => s.id === id);
 
 setSchoolId(id);
