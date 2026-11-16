@@ -351,7 +351,7 @@ try {
 
 async function deleteStudent(student: Student) {
 const confirmed = window.confirm(
-"Delete ${student.first_name} ${student.last_name}'s record? This cannot be undone."
+"Mark ${student.first_name} ${student.last_name} as withdrawn? Their records and photograph will be preserved."
 );
 
 if (!confirmed) return;
@@ -362,34 +362,27 @@ setNotice("");
 const supabase = createClient();
 
 try {
-  if (student.photo_url) {
-    await supabase.storage
-      .from("student-photos")
-      .remove([student.photo_url]);
-  }
+const { error: updateError } = await supabase
+.from("students")
+.update({ status: "withdrawn" })
+.eq("id", student.id)
+.eq("school_id", schoolId);
 
-  const { error: deleteError } = await supabase
-    .from("students")
-    .delete()
-    .eq("id", student.id)
-    .eq("school_id", schoolId);
+if (updateError) throw updateError;
 
-  if (deleteError) throw deleteError;
+setNotice("Student marked as withdrawn. Their records have been preserved.");
 
-  setNotice("Student record deleted.");
+await loadData();
 
-  await loadData();
 } catch (e) {
-  setError(
-    e instanceof Error
-      ? e.message
-      : "Unable to delete student."
-  );
+setError(
+e instanceof Error
+? e.message
+: "Unable to update student status."
+);
 }
-
 }
-
-function changeSchool(id: string) {
+const function changeSchool(id: string) {
 const selected = schools.find((s) => s.id === id);
 
 setSchoolId(id);
