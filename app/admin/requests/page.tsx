@@ -818,4 +818,32 @@ export default function MembershipRequestsPage() {
                   {workingId === request.membership_id
                     ? "Processing..."
                     : "✓ Approve"}
-                </butt
+                                </button>
+
+                <button
+                  className="membership-button membership-reject"
+                  disabled={
+                    workingId === request.membership_id
+                  }
+                  onClick={() =>
+                    reviewRequest(request, "reject")
+                  }
+                >
+                  {workingId === request.membership_id
+                    ? "Processing..."
+                    : "Reject"}
+                </button>
+              </div>
+            </article>
+          ))
+        )}
+
+        <footer className="membership-footer">
+          CLASSBRIDGE · School Management Platform
+          <br />
+          Created by Ayanfe Innovation Labs Limited.
+        </footer>
+      </div>
+    </main>
+  );
+}
