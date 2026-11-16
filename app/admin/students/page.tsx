@@ -334,7 +334,29 @@ try {
 }
 
 }
+async function updateStudentStatus(
+  student: Student,
+  newStatus: string
+) {
+  setError("");
+  setNotice("");
 
+  const supabase = createClient();
+
+  const { error: updateError } = await supabase
+    .from("students")
+    .update({ status: newStatus })
+    .eq("id", student.id)
+    .eq("school_id", schoolId);
+
+  if (updateError) {
+    setError(updateError.message);
+    return;
+  }
+
+  setNotice("Student status updated successfully.");
+  await loadData();
+}
 async function deleteStudent(student: Student) {
 const confirmed = window.confirm(
 "Mark ${student.first_name} ${student.last_name} as withdrawn? Their records and photograph will be preserved."
