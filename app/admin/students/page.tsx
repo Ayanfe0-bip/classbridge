@@ -1529,10 +1529,10 @@ color: "#1769e0",
   type="button"
   className="student-btn student-danger"
   onClick={onDelete}
-  title="Delete student"
+  title="Mark student as withdrawn"
 >
-  <span aria-hidden="true">⌫</span>
-  Delete
+  <span aria-hidden="true">↘</span>
+  Withdraw
 </button>
     </div>
   </td>
