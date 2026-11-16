@@ -1465,20 +1465,24 @@ color: "#1769e0",
   <td>
     <div style={{ display: "flex", gap: 6 }}>
       <button
-        type="button"
-        className="student-btn student-secondary"
-        onClick={onEdit}
-      >
-        Edit
-      </button>
+  type="button"
+  className="student-btn student-secondary"
+  onClick={onEdit}
+  title="Edit student"
+>
+  <span aria-hidden="true">✎</span>
+  Edit
+</button>
 
       <button
-        type="button"
-        className="student-btn student-danger"
-        onClick={onDelete}
-      >
-        Delete
-      </button>
+  type="button"
+  className="student-btn student-danger"
+  onClick={onDelete}
+  title="Delete student"
+>
+  <span aria-hidden="true">⌫</span>
+  Delete
+</button>
     </div>
   </td>
 </tr>
