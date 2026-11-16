@@ -945,6 +945,8 @@ padding: 25px 16px 45px;
     }
 `}</style>
 
+<div className="student-wrap">
+
   <Link href="/admin" className="student-back">
   <span className="student-back-icon">‹</span>
   <span>Administrator Dashboard</span>
