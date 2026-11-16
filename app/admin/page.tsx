@@ -291,10 +291,10 @@ export default function AdminDashboard() {
             Dashboard
           </a>
 
-          <a href="#students" className="nav-item">
-            <span className="nav-icon">♙</span>
-            Students
-          </a>
+          <Link href="/admin/students" className="nav-item">
+  <span className="nav-icon">♙</span>
+  Students
+</Link>
            
           <Link href="/admin/teachers" className="nav-item">
   <span className="nav-icon">♧</span>
