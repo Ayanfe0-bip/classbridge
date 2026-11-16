@@ -1336,9 +1336,10 @@ padding: 25px 16px 45px;
             <thead>
               <tr>
                 <th>Student</th>
-                <th>Admission no.</th>
-                <th>Class</th>
-                <th>Actions</th>
+<th>Admission no.</th>
+<th>Class</th>
+<th>Status</th>
+<th>Actions</th>
               </tr>
             </thead>
 
