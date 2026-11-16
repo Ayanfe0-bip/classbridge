@@ -1482,9 +1482,18 @@ color: "#1769e0",
 
   <td>{student.class_name || "Not assigned"}</td>
 <td>
-  <span className={`student-status status-${student.status}`}>
-    {student.status.charAt(0).toUpperCase() + student.status.slice(1)}
-  </span>
+  <select
+    className="student-select"
+    value={student.status}
+    onChange={(e) => onStatusChange(e.target.value)}
+    aria-label="Change student status"
+  >
+    <option value="active">Active</option>
+    <option value="graduated">Graduated</option>
+    <option value="withdrawn">Withdrawn</option>
+    <option value="transferred">Transferred</option>
+    <option value="suspended">Suspended</option>
+  </select>
 </td>
   <td>
     <div style={{ display: "flex", gap: 6 }}>
