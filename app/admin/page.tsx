@@ -296,10 +296,10 @@ export default function AdminDashboard() {
             Students
           </a>
            
-          <a href="#teachers" className="nav-item">
-            <span className="nav-icon">♧</span>
-            Teachers
-          </a>
+          <Link href="/admin/teachers" className="nav-item">
+  <span className="nav-icon">♧</span>
+  Teachers
+</Link>
             <Link href="/admin/requests" className="nav-item">
   <span className="nav-icon">♧</span>
   Membership Requests
