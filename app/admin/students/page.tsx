@@ -943,6 +943,122 @@ padding: 25px 16px 45px;
     flex: 1;
   }
     }
+    /* PREMIUM REGISTERED STUDENTS TABLE */
+
+.student-table-wrap {
+  border: 1px solid #e5edf7;
+  border-radius: 15px;
+  overflow-x: auto;
+  background: #fff;
+}
+
+.student-table {
+  width: 100%;
+  min-width: 600px;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.student-table th {
+  padding: 15px 12px;
+  background: #f1f6fd;
+  color: #526b8c;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  border-bottom: 1px solid #e1eaf5;
+}
+
+.student-table td {
+  padding: 13px 12px;
+  color: #405570;
+  font-size: 12px;
+  font-weight: 600;
+  border-bottom: 1px solid #edf2f8;
+  vertical-align: middle;
+}
+
+.student-table tbody tr {
+  transition: background .2s ease;
+}
+
+.student-table tbody tr:hover {
+  background: #f7faff;
+}
+
+.student-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* SMALLER STUDENT PHOTOS */
+
+.student-photo {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 2px solid #e5effc;
+  box-shadow: 0 2px 6px rgba(25,70,130,.08);
+}
+
+/* STUDENT NAME TYPOGRAPHY */
+
+.student-name {
+  color: #183b68;
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: .1px;
+  line-height: 1.5;
+}
+
+.student-sub {
+  color: #8a9bb1;
+  font-size: 10px;
+  font-weight: 600;
+  margin-top: 3px;
+}
+
+/* MODERN ACTION BUTTONS */
+
+.student-table .student-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 34px;
+  padding: 7px 11px;
+  border-radius: 9px;
+  font-size: 11px;
+  font-weight: 850;
+  cursor: pointer;
+  transition: all .2s ease;
+  white-space: nowrap;
+}
+
+.student-table .student-secondary {
+  background: #eaf3ff;
+  color: #1769d2;
+  border: 1px solid #d5e7ff;
+}
+
+.student-table .student-secondary:hover {
+  background: #1769d2;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.student-table .student-danger {
+  background: #fff0f0;
+  color: #d34450;
+  border: 1px solid #ffdddd;
+}
+
+.student-table .student-danger:hover {
+  background: #d34450;
+  color: #fff;
+  transform: translateY(-1px);
+}
 `}</style>
 
 <div className="student-wrap">
