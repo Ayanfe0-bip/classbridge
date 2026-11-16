@@ -1372,6 +1372,7 @@ padding: 25px 16px 45px;
                   student={s}
                   onEdit={() => startEdit(s)}
                   onDelete={() => deleteStudent(s)}
+                   onStatusChange={(newStatus) => updateStudentStatus(s, newStatus)}
                 />
               ))}
             </tbody>
@@ -1396,13 +1397,15 @@ padding: 25px 16px 45px;
 }
 
 function StudentRow({
-student,
-onEdit,
-onDelete,
+  student,
+  onEdit,
+  onDelete,
+  onStatusChange,
 }: {
-student: Student;
-onEdit: () => void;
-onDelete: () => void;
+  student: Student;
+  onEdit: () => void;
+  onDelete: () => void;
+  onStatusChange: (newStatus: string) => void;
 }) {
 const [imageUrl, setImageUrl] = useState("");
 
