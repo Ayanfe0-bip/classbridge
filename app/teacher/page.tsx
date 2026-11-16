@@ -101,7 +101,7 @@ const supabase = createClient();
     const { data: schoolRecords, error: schoolError } =
       await supabase
         .from("schools")
-        .select("id, name")
+        ..select("id, school_name")
         .in("id", schoolIds);
 
     if (schoolError) {
