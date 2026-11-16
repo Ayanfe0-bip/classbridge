@@ -1,604 +1,503 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 type School = {
   id: string;
   school_name: string;
-  school_code: string;
 };
 
-type DashboardStats = {
-  students: number;
-  teachers: number;
-  parents: number;
-  classes: number;
-  subjects: number;
-  pendingExams: number;
+type RequestRow = {
+  membership_id: string;
+  school_id: string;
+  user_id: string;
+  role: string;
+  status: string;
+  created_at: string;
+  full_name: string;
+  email: string;
 };
 
-const emptyStats: DashboardStats = {
-  students: 0,
-  teachers: 0,
-  parents: 0,
-  classes: 0,
-  subjects: 0,
-  pendingExams: 0,
-};
-
-export default function AdminDashboard() {
+export default function MembershipRequestsPage() {
   const router = useRouter();
 
-  const [adminName, setAdminName] = useState("");
   const [schools, setSchools] = useState<School[]>([]);
   const [schoolId, setSchoolId] = useState("");
-  const [schoolName, setSchoolName] = useState("");
-  const [schoolCode, setSchoolCode] = useState("");
-
-  const [stats, setStats] = useState<DashboardStats>(emptyStats);
+  const [requests, setRequests] = useState<RequestRow[]>([]);
   const [loading, setLoading] = useState(true);
-  const [statsLoading, setStatsLoading] = useState(false);
+  const [workingId, setWorkingId] = useState("");
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
-    async function loadAdminAccount() {
-      try {
-        const supabase = createClient();
+    async function loadSchools() {
+      const supabase = createClient();
 
-        const {
-          data: { user },
-          error: authError,
-        } = await supabase.auth.getUser();
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
 
-        if (authError || !user) {
-          router.replace("/login");
-          return;
-        }
-
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("full_name")
-          .eq("id", user.id)
-          .maybeSingle();
-
-        setAdminName(
-          profile?.full_name ||
-            user.user_metadata?.full_name ||
-            "Administrator"
-        );
-
-        const { data: memberships, error: membershipError } =
-          await supabase
-            .from("school_memberships")
-            .select("school_id")
-            .eq("user_id", user.id)
-            .eq("role", "admin")
-            .eq("status", "active");
-
-        if (membershipError) {
-          throw membershipError;
-        }
-
-        if (!memberships || memberships.length === 0) {
-          setError(
-            "Your administrator account does not have an active school membership."
-          );
-          setLoading(false);
-          return;
-        }
-
-        const schoolIds = memberships.map(
-          (membership) => membership.school_id
-        );
-
-        const { data: schoolRecords, error: schoolError } =
-          await supabase
-            .from("schools")
-            .select("id, school_name, school_code")
-            .in("id", schoolIds);
-
-        if (schoolError) {
-          throw schoolError;
-        }
-
-        const availableSchools = (schoolRecords || []) as School[];
-
-        setSchools(availableSchools);
-
-        if (availableSchools.length === 0) {
-          setError("We could not find your registered school.");
-          setLoading(false);
-          return;
-        }
-
-        setSchoolId(availableSchools[0].id);
-        setSchoolName(availableSchools[0].school_name);
-        setSchoolCode(availableSchools[0].school_code);
-
-        setLoading(false);
-      } catch (err) {
-        setError(
-          err instanceof Error
-            ? err.message
-            : "Unable to load your administrator workspace."
-        );
-        setLoading(false);
+      if (authError || !user) {
+        router.replace("/login");
+        return;
       }
+
+      const { data: memberships, error: membershipError } =
+        await supabase
+          .from("school_memberships")
+          .select("school_id")
+          .eq("user_id", user.id)
+          .eq("role", "admin")
+          .eq("status", "active");
+
+      if (membershipError) {
+        setError(membershipError.message);
+        setLoading(false);
+        return;
+      }
+
+      const ids = (memberships || []).map(
+        (item) => item.school_id
+      );
+
+      if (!ids.length) {
+        setError("No active administrator membership was found.");
+        setLoading(false);
+        return;
+      }
+
+      const { data: schoolRows, error: schoolError } =
+        await supabase
+          .from("schools")
+          .select("id, school_name")
+          .in("id", ids)
+          .order("school_name");
+
+      if (schoolError) {
+        setError(schoolError.message);
+        setLoading(false);
+        return;
+      }
+
+      const available = (schoolRows || []) as School[];
+
+      setSchools(available);
+
+      if (available.length) {
+        setSchoolId(available[0].id);
+      }
+
+      setLoading(false);
     }
 
-    loadAdminAccount();
+    loadSchools();
   }, [router]);
 
   useEffect(() => {
     if (!schoolId) return;
 
-    async function loadSchoolStatistics() {
-      setStatsLoading(true);
+    async function loadRequests() {
+      setLoading(true);
       setError("");
 
-      try {
-        const supabase = createClient();
+      const supabase = createClient();
 
-        const [
-          students,
-          teachers,
-          parents,
-          classes,
-          subjects,
-          exams,
-        ] = await Promise.all([
-          supabase
-            .from("students")
-            .select("*", { count: "exact", head: true })
-            .eq("school_id", schoolId),
-
-          supabase
-            .from("school_memberships")
-            .select("*", { count: "exact", head: true })
-            .eq("school_id", schoolId)
-            .eq("role", "teacher")
-            .eq("status", "active"),
-
-          supabase
-            .from("school_memberships")
-            .select("*", { count: "exact", head: true })
-            .eq("school_id", schoolId)
-            .eq("role", "parent")
-            .eq("status", "active"),
-
-          supabase
-            .from("classes")
-            .select("*", { count: "exact", head: true })
-            .eq("school_id", schoolId),
-
-          supabase
-            .from("subjects")
-            .select("*", { count: "exact", head: true })
-            .eq("school_id", schoolId),
-
-          supabase
-            .from("exam_question_submissions")
-            .select("*", { count: "exact", head: true })
-            .eq("school_id", schoolId)
-            .eq("status", "pending"),
-        ]);
-
-        const results = [
-          students,
-          teachers,
-          parents,
-          classes,
-          subjects,
-          exams,
-        ];
-
-        const failedQuery = results.find(
-          (result) => result.error
+      const { data, error: requestError } =
+        await supabase.rpc(
+          "list_school_membership_requests",
+          { p_school_id: schoolId }
         );
 
-        if (failedQuery?.error) {
-          throw failedQuery.error;
-        }
-
-        setStats({
-          students: students.count || 0,
-          teachers: teachers.count || 0,
-          parents: parents.count || 0,
-          classes: classes.count || 0,
-          subjects: subjects.count || 0,
-          pendingExams: exams.count || 0,
-        });
-      } catch (err) {
-        setError(
-          err instanceof Error
-            ? err.message
-            : "Unable to load school statistics."
-        );
-      } finally {
-        setStatsLoading(false);
+      if (requestError) {
+        setError(requestError.message);
+        setRequests([]);
+      } else {
+        setRequests((data || []) as RequestRow[]);
       }
+
+      setLoading(false);
     }
 
-    loadSchoolStatistics();
+    loadRequests();
   }, [schoolId]);
 
-  function changeSchool(id: string) {
-    const selectedSchool = schools.find(
-      (school) => school.id === id
+  async function reviewRequest(
+    request: RequestRow,
+    decision: "approve" | "reject"
+  ) {
+    const confirmed = window.confirm(
+      \`Are you sure you want to \${decision} \${request.full_name}'s \${request.role} request?\`
     );
 
-    setSchoolId(id);
-    setSchoolName(selectedSchool?.school_name || "");
-    setSchoolCode(selectedSchool?.school_code || "");
-    setStats(emptyStats);
-  }
+    if (!confirmed) return;
 
-  async function handleSignOut() {
+    setWorkingId(request.membership_id);
+    setError("");
+    setMessage("");
+
     const supabase = createClient();
-    await supabase.auth.signOut();
-    router.replace("/login");
-    router.refresh();
-  }
 
-  if (loading) {
-    return (
-      <main className="teacher-loading">
-        <div className="teacher-loading-card">
-          <div className="teacher-loader" />
-          <h2>Preparing your school workspace</h2>
-          <p>Connecting to CLASSBRIDGE...</p>
-        </div>
-      </main>
+    const { error: reviewError } = await supabase.rpc(
+      "review_school_membership",
+      {
+        p_membership_id: request.membership_id,
+        p_decision: decision,
+      }
     );
-  }
 
-  if (error && schools.length === 0) {
-    return (
-      <main className="teacher-loading">
-        <div className="teacher-loading-card">
-          <div className="teacher-error-icon">!</div>
-          <h2>Administrator workspace unavailable</h2>
-          <p>{error}</p>
-          <button
-            className="teacher-primary-button"
-            onClick={handleSignOut}
-          >
-            Sign Out
-          </button>
-        </div>
-      </main>
-    );
-  }
+    if (reviewError) {
+      setError(reviewError.message);
+    } else {
+      setMessage(
+        decision === "approve"
+          ? \`\${request.full_name} has been approved successfully.\`
+          : \`\${request.full_name}'s request has been rejected.\`
+      );
 
-  return (
-    <main className="dashboard-shell">
-      <aside className="sidebar">
-        <Link href="/" className="brand">
-          <div className="brand-icon">C</div>
-          <div className="brand-name">
-            CLASS<span>BRIDGE</span>
-          </div>
-        </Link>
+      setRequests((current) =>
+        current.filter(
+          (item) =>
+            item.membership_id !== request.membership_id
+        )
+      );
+    }
 
-        <div className="nav-label">MAIN MENU</div>
+    setWorkingId("");
+                 }
+                 return (
+<main className="membership-page">
+<style jsx>{`
+.membership-page {
+min-height: 100vh;
+background: #f4f7fb;
+padding: 28px 18px;
+color: #17243a;
+}
 
-        <nav className="nav-list">
-          <a href="#overview" className="nav-item active">
-            <span className="nav-icon">▦</span>
-            Dashboard
-          </a>
+    .membership-wrap {
+      max-width: 1050px;
+      margin: 0 auto;
+    }
 
-          <a href="#students" className="nav-item">
-            <span className="nav-icon">♙</span>
-            Students
-          </a>
+    .membership-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
 
-          <a href="#teachers" className="nav-item">
-            <span className="nav-icon">♧</span>
-            Teachers
-          </a>
+    .membership-brand {
+      font-size: 20px;
+      font-weight: 900;
+      color: #173b70;
+      text-decoration: none;
+    }
 
-          <a href="#classes" className="nav-item">
-            <span className="nav-icon">▣</span>
-            Classes & Subjects
-          </a>
+    .membership-brand span {
+      color: #2684dc;
+    }
 
-          <a href="#attendance" className="nav-item">
-            <span className="nav-icon">◷</span>
-            Attendance
-          </a>
+    .membership-back {
+      color: #1769b2;
+      text-decoration: none;
+      font-weight: 700;
+    }
 
-          <a href="#examinations" className="nav-item">
-            <span className="nav-icon">✎</span>
-            Examinations
-          </a>
+    .membership-heading h1 {
+      font-size: clamp(25px, 4vw, 34px);
+      margin: 0 0 8px;
+    }
 
-          <a href="#results" className="nav-item">
-            <span className="nav-icon">▤</span>
-            Results & Reports
-          </a>
-        </nav>
+    .membership-heading p {
+      color: #66758b;
+      margin: 0 0 22px;
+      line-height: 1.6;
+    }
 
-        <div className="nav-label">SCHOOL MANAGEMENT</div>
+    .membership-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
 
-        <nav className="nav-list">
-          <a href="#fees" className="nav-item">
-            <span className="nav-icon">₦</span>
-            School Fees
-          </a>
+    .membership-select {
+      padding: 12px 14px;
+      border: 1px solid #d8e1ed;
+      border-radius: 10px;
+      background: #fff;
+      min-width: 220px;
+      color: #17243a;
+    }
 
-          <a href="#salaries" className="nav-item">
-            <span className="nav-icon">₦</span>
-            Teacher Salaries
-          </a>
+    .membership-count {
+      font-weight: 700;
+      color: #52647c;
+    }
 
-          <a href="#timetable" className="nav-item">
-            <span className="nav-icon">▥</span>
-            Timetable
-          </a>
+    .membership-card {
+      background: #fff;
+      border: 1px solid #e4eaf2;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 14px;
+      box-shadow: 0 5px 20px rgba(25, 55, 90, .04);
+    }
 
-          <a href="#announcements" className="nav-item">
-            <span className="nav-icon">✉</span>
-            Announcements
-          </a>
+    .membership-card-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+    }
 
-          <a href="#settings" className="nav-item">
-            <span className="nav-icon">⚙</span>
-            Settings
-          </a>
+    .membership-name {
+      font-size: 18px;
+      font-weight: 800;
+      margin: 0 0 6px;
+    }
 
-          <button
-            className="nav-item"
-            onClick={handleSignOut}
-          >
-            <span className="nav-icon">↪</span>
-            Sign Out
-          </button>
-        </nav>
+    .membership-email {
+      color: #63748b;
+      overflow-wrap: anywhere;
+    }
 
-        <div className="sidebar-bottom">
-          <div className="sidebar-profile">
-            <div className="avatar">
-              {adminName.charAt(0).toUpperCase()}
-            </div>
-            <div>
-              <div className="profile-name">{adminName}</div>
-              <div className="profile-role">
-                School Administrator
-              </div>
-            </div>
-          </div>
-        </div>
-      </aside>
+    .membership-badge {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 30px;
+      background: #edf4ff;
+      color: #2366ad;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: capitalize;
+    }
 
-      <section className="main-area">
-        <header className="topbar">
-          <div>
-            <h1 className="page-title">Dashboard</h1>
-            <p className="page-subtitle">
-              Your school's management and administration centre.
-            </p>
-          </div>
+    .membership-meta {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      color: #687990;
+      font-size: 13px;
+      margin: 17px 0;
+    }
 
-          {schools.length > 1 ? (
-            <select
-              className="teacher-school-select"
-              value={schoolId}
-              onChange={(event) =>
-                changeSchool(event.target.value)
-              }
-              aria-label="Select school"
-            >
-              {schools.map((school) => (
-                <option key={school.id} value={school.id}>
-                  {school.school_name}
-                </option>
-              ))}
-            </select>
-          ) : (
-            <div className="school-selector">
-              {schoolName}
-            </div>
-          )}
-        </header>
+    .membership-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
 
-        <section className="admin-school-letterhead">
-          <div className="admin-school-emblem">
-            {schoolName.charAt(0).toUpperCase()}
-          </div>
+    .membership-button {
+      border: 0;
+      border-radius: 9px;
+      padding: 10px 17px;
+      font-weight: 800;
+      cursor: pointer;
+    }
 
-          <div className="admin-school-heading">
-            <span>OFFICIAL SCHOOL WORKSPACE</span>
-            <h2>{schoolName}</h2>
-            <p>CLASSBRIDGE SCHOOL MANAGEMENT PORTAL</p>
-            <small>School Code: {schoolCode}</small>
-          </div>
-        </section>
+    .membership-approve {
+      background: #16865c;
+      color: white;
+    }
 
-        {error && (
-          <div className="teacher-inline-error" role="alert">
-            {error}
-          </div>
-        )}
+    .membership-reject {
+      background: #fff0f0;
+      color: #c23d46;
+    }
 
-        <section className="welcome-banner" id="overview">
-          <div>
-            <h2>
-              Welcome back, {adminName.split(" ")[0]}!
-            </h2>
-            <p>
-              Manage your school, support your teachers and
-              help every student reach their full potential.
-              <br />
-              Your school management starts here.
-            </p>
-          </div>
-          <a href="#school-statistics" className="banner-button">
-            View School Statistics →
-          </a>
-        </section>
+    .membership-button:disabled {
+      opacity: .55;
+      cursor: wait;
+    }
 
-        <section
-          className="stats-grid"
-          id="school-statistics"
+    .membership-alert {
+      padding: 13px 15px;
+      border-radius: 10px;
+      margin: 14px 0;
+      background: #fff0f0;
+      color: #a62d37;
+    }
+
+    .membership-success {
+      background: #eaf8f1;
+      color: #13754e;
+    }
+
+    .membership-empty,
+    .membership-loading {
+      padding: 38px 20px;
+      text-align: center;
+      background: #fff;
+      border: 1px solid #e4eaf2;
+      border-radius: 16px;
+      color: #687990;
+    }
+
+    @media (max-width: 600px) {
+      .membership-page {
+        padding: 18px 12px;
+      }
+
+      .membership-card {
+        padding: 16px;
+      }
+
+      .membership-card-head {
+        flex-direction: column;
+      }
+    }
+  `}</style>
+
+  <div className="membership-wrap">
+    <div className="membership-top">
+      <Link href="/admin" className="membership-brand">
+        CLASS<span>BRIDGE</span>
+      </Link>
+
+      <Link href="/admin" className="membership-back">
+        ← Back to Dashboard
+      </Link>
+    </div>
+
+    <header className="membership-heading">
+      <h1>Membership Requests</h1>
+      <p>
+        Review teachers and parents who have requested
+        access to your school.
+      </p>
+    </header>
+
+    {schools.length > 1 && (
+      <div className="membership-toolbar">
+        <label htmlFor="request-school">
+          Select school
+        </label>
+
+        <select
+          id="request-school"
+          className="membership-select"
+          value={schoolId}
+          onChange={(event) =>
+            setSchoolId(event.target.value)
+          }
         >
-          {[
-            {
-              label: "Total Students",
-              value: stats.students,
-              note: "Registered student records",
-              icon: "♙",
-              background: "#eaf2ff",
-              color: "#1769e0",
-            },
-            {
-              label: "Active Teachers",
-              value: stats.teachers,
-              note: "Approved teaching staff",
-              icon: "♧",
-              background: "#e8f8f1",
-              color: "#159b69",
-            },
-            {
-              label: "Active Parents",
-              value: stats.parents,
-              note: "Approved parent accounts",
-              icon: "♧",
-              background: "#f2edff",
-              color: "#8055c9",
-            },
-            {
-              label: "Classes",
-              value: stats.classes,
-              note: "Registered school classes",
-              icon: "▣",
-              background: "#fff4e4",
-              color: "#e69a28",
-            },
-            {
-              label: "Subjects",
-              value: stats.subjects,
-              note: "Available school subjects",
-              icon: "▤",
-              background: "#e8f8f1",
-              color: "#159b69",
-            },
-            {
-              label: "Pending Examinations",
-              value: stats.pendingExams,
-              note: "Awaiting your review",
-              icon: "✎",
-              background: "#ffeded",
-              color: "#e45c62",
-            },
-          ].map((stat) => (
-            <article className="stat-card" key={stat.label}>
-              <div className="stat-top">
-                <span className="stat-label">
-                  {stat.label}
-                </span>
-                <span
-                  className="stat-icon"
-                  style={{
-                    background: stat.background,
-                    color: stat.color,
-                  }}
-                >
-                  {stat.icon}
-                </span>
-              </div>
-
-              <div className="stat-value">
-                {statsLoading ? "—" : stat.value}
-              </div>
-
-              <div className="stat-note">{stat.note}</div>
-            </article>
+          {schools.map((school) => (
+            <option key={school.id} value={school.id}>
+              {school.school_name}
+            </option>
           ))}
-        </section>
+        </select>
+      </div>
+    )}
 
-        <section className="content-grid">
-          <article className="panel">
-            <div className="panel-header">
-              <div>
-                <h3 className="panel-title">
-                  School Overview
-                </h3>
-                <p className="panel-caption">
-                  Your school's current registration summary.
-                </p>
+    {error && (
+      <div className="membership-alert" role="alert">
+        {error}
+      </div>
+    )}
+
+    {message && (
+      <div
+        className="membership-alert membership-success"
+        role="status"
+      >
+        {message}
+      </div>
+    )}
+
+    <div className="membership-toolbar">
+      <span className="membership-count">
+        {requests.length} pending request
+        {requests.length === 1 ? "" : "s"}
+      </span>
+
+      <Link href="/admin" className="membership-back">
+        Dashboard
+      </Link>
+    </div>
+
+    {loading ? (
+      <div className="membership-loading">
+        Loading membership requests...
+      </div>
+    ) : requests.length === 0 ? (
+      <div className="membership-empty">
+        <h3>No pending requests</h3>
+        <p>
+          New teacher and parent applications will appear here.
+        </p>
+      </div>
+    ) : (
+      requests.map((request) => (
+        <article
+          className="membership-card"
+          key={request.membership_id}
+        >
+          <div className="membership-card-head">
+            <div>
+              <h2 className="membership-name">
+                {request.full_name || "Applicant"}
+              </h2>
+
+              <div className="membership-email">
+                {request.email || "Email unavailable"}
               </div>
             </div>
 
-            <div className="admin-overview-list">
-              <div>
-                <span>Registered students</span>
-                <strong>{stats.students}</strong>
-              </div>
-              <div>
-                <span>Active teachers</span>
-                <strong>{stats.teachers}</strong>
-              </div>
-              <div>
-                <span>Active parents</span>
-                <strong>{stats.parents}</strong>
-              </div>
-              <div>
-                <span>Classes and subjects</span>
-                <strong>
-                  {stats.classes} / {stats.subjects}
-                </strong>
-              </div>
-            </div>
-          </article>
+            <span className="membership-badge">
+              {request.role}
+            </span>
+          </div>
 
-          <article className="panel">
-            <div className="panel-header">
-              <div>
-                <h3 className="panel-title">
-                  Administrator's Guide
-                </h3>
-                <p className="panel-caption">
-                  Your school management starts here.
-                </p>
-              </div>
-            </div>
+          <div className="membership-meta">
+            <span>
+              Requested:{" "}
+              {new Date(request.created_at).toLocaleString()}
+            </span>
 
-            <div className="admin-guide">
-              <div className="admin-guide-icon">✦</div>
-              <h3>Build a better school experience</h3>
-              <p>
-                Register students, approve teachers, organise
-                classes, review examinations and manage your
-                school's academic activities.
-              </p>
-            </div>
-          </article>
-        </section>
+            <span>Application status: Pending</span>
+          </div>
 
-        <section className="ai-card">
-          <span className="ai-badge">✦ CLASSBRIDGE AI</span>
-          <h3>
-            Your intelligent teaching and learning assistant.
-          </h3>
-          <p>
-            Prepare lesson notes, generate examination
-            questions and support better learning experiences.
-            Powered by ZENTRIX AI, developed by Ayanfe
-            Innovation Labs Limited.
-          </p>
-        </section>
-
-        <footer className="footer">
-          CLASSBRIDGE © 2026 · Created by{" "}
-          <strong>Ayanfe Innovation Labs Limited.</strong>
-          <br />
-          <span>Powered by ZENTRIX AI technology.</span>
-        </footer>
-      </section>
-    </main>
-  );
+          <div className="membership-actions">
+            <button
+              className="membership-button membership-approve"
+              disabled={
+                workingId === request.membership_id
               }
+              onClick={() =>
+                reviewRequest(request, "approve")
+              }
+            >
+              {workingId === request.membership_id
+                ? "Processing..."
+                : "Approve"}
+            </button>
+
+            <button
+              className="membership-button membership-reject"
+              disabled={
+                workingId === request.membership_id
+              }
+              onClick={() =>
+                reviewRequest(request, "reject")
+              }
+            >
+              Reject
+            </button>
+          </div>
+        </article>
+      ))
+    )}
+  </div>
+</main>
+
+);
+  }
