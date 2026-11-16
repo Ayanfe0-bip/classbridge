@@ -943,8 +943,7 @@ padding: 25px 16px 45px;
     flex: 1;
   }
     }
-`}
-    }</style>
+`}</style>
 
   <Link href="/admin" className="student-back">
   <span className="student-back-icon">‹</span>
