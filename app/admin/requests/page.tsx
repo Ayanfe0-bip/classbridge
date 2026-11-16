@@ -129,8 +129,8 @@ export default function MembershipRequestsPage() {
     request: RequestRow,
     decision: "approve" | "reject"
   ) {
-    const confirmed = window.confirm(
-      \`Are you sure you want to \${decision} \${request.full_name}'s \${request.role} request?\`
+        const confirmed = window.confirm(
+      `Are you sure you want to ${decision} ${request.full_name}'s ${request.role} request?`
     );
 
     if (!confirmed) return;
