@@ -1062,6 +1062,24 @@ padding: 25px 16px 45px;
   color: #fff;
   transform: translateY(-1px);
 }
+.student-table .student-select {
+  min-width: 125px;
+  padding: 9px 11px;
+  border: 1px solid #dbe5f2;
+  border-radius: 9px;
+  background: #f8fbff;
+  color: #24466f;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.student-table .student-select:focus {
+  border-color: #1769e0;
+  box-shadow: 0 0 0 3px rgba(23, 105, 224, 0.12);
+  outline: none;
+}
 `}</style>
 
 <div className="student-wrap">
