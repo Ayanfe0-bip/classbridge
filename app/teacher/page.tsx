@@ -114,7 +114,7 @@ const supabase = createClient();
 
     if (availableSchools.length > 0) {
       setSchoolId(availableSchools[0].id);
-      setSchoolName(availableSchools[0].name);
+      setSchoolName(availableschool.school_name);
     } else {
       setError("We couldn't find your school workspace.");
     }
@@ -219,7 +219,7 @@ const selectedSchool = schools.find(
 );
 
 setSchoolId(id);
-setSchoolName(selectedSchool?.name || "");
+setSchoolName(selectedschool.school_name || "");
 
 }
 
@@ -354,7 +354,7 @@ CLASS<span>BRIDGE</span>
           >
             {schools.map((school) => (
               <option key={school.id} value={school.id}>
-                {school.name}
+                {school.school_name}
               </option>
             ))}
           </select>
