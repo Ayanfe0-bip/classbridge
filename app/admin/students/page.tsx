@@ -674,36 +674,53 @@ padding: 25px 16px 45px;
     }
   `}</style>
 
-  <div className="student-wrap">
-    <Link href="/admin" className="student-back">
-      ← Back to Administrator Dashboard
-    </Link>
+  <Link href="/admin" className="student-back">
+  <span className="student-back-icon">‹</span>
+  <span>Administrator Dashboard</span>
+</Link>
 
-    <header className="student-head">
-      <div>
-        <h1>Student Management</h1>
-        <p>
-          Register students, assign classes and maintain
-          official school records.
-        </p>
-      </div>
+<header className="student-head">
+  <div className="student-head-copy">
+    <div className="student-kicker">
+      <span className="student-kicker-dot" />
+      Administrator workspace
+    </div>
 
-      {schools.length > 1 ? (
-        <select
-          className="school-select"
-          value={schoolId}
-          onChange={(e) => changeSchool(e.target.value)}
-        >
-          {schools.map((s) => (
-            <option key={s.id} value={s.id}>
-              {s.school_name}
-            </option>
-          ))}
-        </select>
-      ) : (
-        <div className="muted">{schoolName}</div>
-      )}
-    </header>
+    <h1>Student Portal</h1>
+
+    <p>
+      Manage admissions, student profiles, class placement
+      and official school records from one organised workspace.
+    </p>
+  </div>
+
+  {schools.length > 1 ? (
+    <select
+      className="school-select"
+      value={schoolId}
+      onChange={(e) => changeSchool(e.target.value)}
+      aria-label="Select school"
+    >
+      {schools.map((s) => (
+        <option key={s.id} value={s.id}>
+          {s.school_name}
+        </option>
+      ))}
+    </select>
+  ) : (
+    <div className="student-school-chip">
+      <span className="student-school-mark">⌂</span>
+      <span>
+        <span className="student-school-label">
+          Managing school
+        </span>
+        <span className="student-school-name">
+          {schoolName}
+        </span>
+      </span>
+    </div>
+  )}
+</header>
 
     {error && (
       <div className="student-alert" role="alert">
