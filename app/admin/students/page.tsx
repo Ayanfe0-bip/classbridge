@@ -164,19 +164,6 @@ loadData();
 }, [loadData]);
 
 const visibleStudents = useMemo(() => {
-const term = search.trim().toLowerCase();
-
-return students.filter((s) => {
-  const name = [
-    s.first_name,
-    s.middle_name,
-    s.last_name,
-  ]
-    .filter(Boolean)
-    .join(" ")
-    .toLowerCase();
-
-  const visibleStudents = useMemo(() => {
   const term = search.trim().toLowerCase();
 
   return students.filter((s) => {
@@ -201,7 +188,6 @@ return students.filter((s) => {
     );
   });
 }, [students, search, classFilter, statusFilter]);
-    
 function startEdit(student: Student) {
 setEditingId(student.id);
 
