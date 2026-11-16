@@ -295,12 +295,15 @@ export default function AdminDashboard() {
             <span className="nav-icon">♙</span>
             Students
           </a>
-
+           
           <a href="#teachers" className="nav-item">
             <span className="nav-icon">♧</span>
             Teachers
           </a>
-
+            <Link href="/admin/requests" className="nav-item">
+  <span className="nav-icon">♧</span>
+  Membership Requests
+</Link>
           <a href="#classes" className="nav-item">
             <span className="nav-icon">▣</span>
             Classes & Subjects
