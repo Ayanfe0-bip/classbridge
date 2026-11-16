@@ -214,13 +214,12 @@ loadWorkspace();
 }, [schoolId, router]);
 
 function changeSchool(id: string) {
-const selectedSchool = schools.find(
-(school) => school.id === id
-);
+  const selectedSchool = schools.find(
+    (school) => school.id === id
+  );
 
-setSchoolId(id);
-setSchoolName(selectedSchool.school_name || "");
-
+  setSchoolId(id);
+  setSchoolName(selectedSchool?.school_name || "");
 }
 
 async function handleSignOut() {
