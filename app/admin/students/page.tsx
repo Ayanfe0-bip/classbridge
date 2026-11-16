@@ -919,7 +919,7 @@ padding: 25px 16px 45px;
           >
             <option value="all">All classes</option>
 
-            classes.map((c) => (
+                        {classes.map((c) => (
               <option key={c.id} value={c.id}>
                 {c.class_name}
               </option>
