@@ -152,10 +152,10 @@ export default function MembershipRequestsPage() {
     if (reviewError) {
       setError(reviewError.message);
     } else {
-      setMessage(
+            setMessage(
         decision === "approve"
-          ? \`\${request.full_name} has been approved successfully.\`
-          : \`\${request.full_name}'s request has been rejected.\`
+          ? `${request.full_name} has been approved successfully.`
+          : `${request.full_name}'s request has been rejected.`
       );
 
       setRequests((current) =>
