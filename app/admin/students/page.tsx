@@ -1327,13 +1327,11 @@ padding: 25px 16px 45px;
             ))}
           </select>
             <select
-className="student-select"
-value={statusFilter}
-onChange={(e) => setStatusFilter(e.target.value)}
-style={{ maxWidth: 190 }}
-
-«»
-
+  className="student-select"
+  value={statusFilter}
+  onChange={(e) => setStatusFilter(e.target.value)}
+  style={{ maxWidth: 190 }}
+>
   <option value="active">Active students</option>
   <option value="all">All students</option>
   <option value="graduated">Graduated</option>
