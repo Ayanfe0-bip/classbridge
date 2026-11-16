@@ -2758,3 +2758,48 @@ a {
     letter-spacing: 1px;
   }
 }
+.school-search-results {
+  margin-top: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.school-search-results h3 {
+  font-size: 14px;
+  color: #172b4d;
+  margin-bottom: 4px;
+}
+
+.school-search-option {
+  width: 100%;
+  padding: 15px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #ffffff;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.school-search-option.selected {
+  border: 2px solid #1769e0;
+  background: #f0f6ff;
+}
+
+.school-search-option strong {
+  color: #172b4d;
+  font-size: 14px;
+}
+
+.school-search-option span {
+  color: #64748b;
+  font-size: 12px;
+}
+
+.school-search-option small {
+  color: #1769e0;
+  font-weight: 700;
+  }
