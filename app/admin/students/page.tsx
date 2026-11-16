@@ -176,32 +176,32 @@ return students.filter((s) => {
     .join(" ")
     .toLowerCase();
 
-  const matchesText =
-    !term ||
-    name.includes(term) ||
-    (s.admission_number || "").toLowerCase().includes(term);
+  const visibleStudents = useMemo(() => {
+  const term = search.trim().toLowerCase();
 
-  return (
-  matchesText &&
-  (classFilter === "all" || s.class_id === classFilter) &&
-  (statusFilter === "all" || s.status === statusFilter)
-);
+  return students.filter((s) => {
+    const name = [
+      s.first_name,
+      s.middle_name,
+      s.last_name,
+    ]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase();
 
+    const matchesText =
+      !term ||
+      name.includes(term) ||
+      (s.admission_number || "").toLowerCase().includes(term);
+
+    return (
+      matchesText &&
+      (classFilter === "all" || s.class_id === classFilter) &&
+      (statusFilter === "all" || s.status === statusFilter)
+    );
+  });
 }, [students, search, classFilter, statusFilter]);
-
-function resetForm() {
-setForm(initialForm);
-setPhoto(null);
-setEditingId("");
-
-const input = document.getElementById(
-  "student-photo"
-) as HTMLInputElement | null;
-
-if (input) input.value = "";
-
-}
-
+    
 function startEdit(student: Student) {
 setEditingId(student.id);
 
