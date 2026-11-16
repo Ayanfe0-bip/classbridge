@@ -1326,6 +1326,21 @@ padding: 25px 16px 45px;
               </option>
             ))}
           </select>
+            <select
+className="student-select"
+value={statusFilter}
+onChange={(e) => setStatusFilter(e.target.value)}
+style={{ maxWidth: 190 }}
+
+«»
+
+  <option value="active">Active students</option>
+  <option value="all">All students</option>
+  <option value="graduated">Graduated</option>
+  <option value="withdrawn">Withdrawn</option>
+  <option value="transferred">Transferred</option>
+  <option value="suspended">Suspended</option>
+</select>
         </div>
 
         <p className="student-count">
