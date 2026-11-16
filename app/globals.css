@@ -2636,3 +2636,125 @@ a {
     flex-direction: column;
   }
   }
+/* ADMIN SCHOOL LETTERHEAD */
+
+.admin-school-letterhead {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 25px 30px;
+  margin: 24px 0;
+  background: #ffffff;
+  border: 1px solid #e5eaf2;
+  border-bottom: 4px solid #1769e0;
+  border-radius: 14px;
+  box-shadow: 0 5px 20px rgba(20, 40, 80, 0.04);
+}
+
+.admin-school-emblem {
+  width: 76px;
+  height: 76px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #1769e0;
+  color: #ffffff;
+  font-size: 32px;
+  font-weight: 800;
+}
+
+.admin-school-heading span {
+  display: block;
+  color: #1769e0;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  margin-bottom: 7px;
+}
+
+.admin-school-heading h2 {
+  margin: 0;
+  color: #172b4d;
+  font-size: 23px;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.admin-school-heading p {
+  margin: 6px 0;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.admin-school-heading small {
+  color: #64748b;
+  font-size: 12px;
+}
+
+.admin-overview-list {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+  padding: 12px 0;
+}
+
+.admin-overview-list div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.admin-overview-list strong {
+  color: #172b4d;
+  font-size: 17px;
+}
+
+.admin-guide {
+  padding: 12px 0;
+}
+
+.admin-guide-icon {
+  color: #1769e0;
+  font-size: 27px;
+}
+
+.admin-guide h3 {
+  margin: 10px 0;
+  color: #172b4d;
+  font-size: 17px;
+}
+
+.admin-guide p {
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+@media (max-width: 600px) {
+  .admin-school-letterhead {
+    padding: 18px;
+    gap: 13px;
+  }
+
+  .admin-school-emblem {
+    width: 55px;
+    height: 55px;
+    font-size: 24px;
+  }
+
+  .admin-school-heading h2 {
+    font-size: 17px;
+  }
+
+  .admin-school-heading p {
+    font-size: 9px;
+    letter-spacing: 1px;
+  }
+}
