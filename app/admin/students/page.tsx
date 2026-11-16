@@ -672,7 +672,278 @@ padding: 25px 16px 45px;
         font-size: 25px;
       }
     }
-  `}</style>
+  `}
+    /* PREMIUM STUDENT PORTAL DESIGN */
+
+.student-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 8% 0%, rgba(37,112,232,.10), transparent 28rem),
+    linear-gradient(180deg, #f5f8ff 0%, #eef3fa 100%);
+  color: #172b49;
+  padding: 22px 16px 48px;
+}
+
+.student-wrap {
+  max-width: 1220px;
+  margin: auto;
+}
+
+/* MODERN DASHBOARD BACK BUTTON */
+
+.student-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 7px 16px 7px 8px;
+  border: 1px solid #dce7f7;
+  border-radius: 999px;
+  background: rgba(255,255,255,.95);
+  color: #245b9f;
+  font-weight: 800;
+  font-size: 13px;
+  text-decoration: none;
+  box-shadow: 0 5px 18px rgba(31,73,130,.07);
+  transition: .2s ease;
+}
+
+.student-back:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 9px 24px rgba(31,73,130,.12);
+}
+
+.student-back-icon {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(135deg,#1769e0,#4597f5);
+  color: #fff;
+  font-size: 19px;
+  line-height: 1;
+}
+
+/* PREMIUM BLUE HEADER */
+
+.student-head {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin: 20px 0 24px;
+  padding: 27px 30px;
+  border: 1px solid rgba(255,255,255,.55);
+  border-radius: 25px;
+  background: linear-gradient(118deg,#123b75 0%,#1769c8 58%,#398ce9 100%);
+  color: #fff;
+  box-shadow: 0 16px 38px rgba(24,83,153,.19);
+}
+
+.student-head::after {
+  content: "";
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  right: 10%;
+  top: -155px;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 28px rgba(255,255,255,.045),
+    0 0 0 58px rgba(255,255,255,.035);
+  pointer-events: none;
+}
+
+.student-head-copy {
+  position: relative;
+  z-index: 1;
+}
+
+.student-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 10px;
+  color: #c9e3ff;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+}
+
+.student-kicker-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #78e2c1;
+  box-shadow: 0 0 0 4px rgba(120,226,193,.15);
+}
+
+.student-head h1 {
+  font-size: clamp(25px,4vw,34px);
+  margin: 0 0 7px;
+  font-weight: 900;
+  letter-spacing: -.8px;
+  color: #fff;
+}
+
+.student-head p {
+  max-width: 560px;
+  margin: 0;
+  color: #d9eaff;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+/* SCHOOL IDENTITY CARD */
+
+.student-school-chip {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 310px;
+  min-width: 190px;
+  padding: 12px 15px;
+  border: 1px solid rgba(255,255,255,.23);
+  border-radius: 15px;
+  background: rgba(255,255,255,.13);
+  color: #fff;
+  backdrop-filter: blur(12px);
+}
+
+.student-school-mark {
+  display: grid;
+  place-items: center;
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  background: rgba(255,255,255,.18);
+  font-size: 18px;
+}
+
+.student-school-label {
+  display: block;
+  margin-bottom: 3px;
+  color: #c8e2ff;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.student-school-name {
+  display: block;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.student-head .school-select {
+  position: relative;
+  z-index: 1;
+  max-width: 280px;
+  border: 1px solid rgba(255,255,255,.35);
+  background: rgba(255,255,255,.96);
+}
+
+.student-head .muted {
+  position: relative;
+  z-index: 1;
+  max-width: 280px;
+  padding: 13px 16px;
+  border: 1px solid rgba(255,255,255,.23);
+  border-radius: 14px;
+  background: rgba(255,255,255,.13);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+/* MOBILE RESPONSIVENESS */
+
+@media (max-width: 850px) {
+  .student-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .student-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .student-head .school-select,
+  .student-head .muted,
+  .student-school-chip {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .student-page {
+    padding: 14px 11px 30px;
+  }
+
+  .student-back {
+    min-height: 42px;
+    padding-right: 14px;
+    font-size: 12px;
+  }
+
+  .student-head {
+    gap: 17px;
+    margin: 15px 0 18px;
+    padding: 22px 18px;
+    border-radius: 20px;
+  }
+
+  .student-head h1 {
+    font-size: 27px;
+  }
+
+  .student-head p {
+    font-size: 12px;
+  }
+
+  .student-grid {
+    gap: 14px;
+  }
+
+  .student-panel {
+    padding: 16px 14px;
+    border-radius: 18px;
+  }
+
+  .student-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .student-field.full {
+    grid-column: auto;
+  }
+
+  .student-toolbar {
+    flex-direction: column;
+  }
+
+  .student-toolbar .student-input,
+  .student-toolbar .student-select {
+    max-width: none !important;
+    width: 100%;
+  }
+
+  .student-actions .student-btn {
+    flex: 1;
+  }
+    }</style>
 
   <Link href="/admin" className="student-back">
   <span className="student-back-icon">‹</span>
