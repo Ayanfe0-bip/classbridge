@@ -389,6 +389,11 @@ e instanceof Error
 );
 }
 }
+    function resetForm() {
+  setEditingId("");
+  setForm(initialForm);
+  setPhoto(null);
+    }
  function changeSchool(id: string) {
 const selected = schools.find((s) => s.id === id);
 
