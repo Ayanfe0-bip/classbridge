@@ -1456,7 +1456,11 @@ color: "#1769e0",
   <td>{student.admission_number}</td>
 
   <td>{student.class_name || "Not assigned"}</td>
-
+<td>
+  <span className={`student-status status-${student.status}`}>
+    {student.status.charAt(0).toUpperCase() + student.status.slice(1)}
+  </span>
+</td>
   <td>
     <div style={{ display: "flex", gap: 6 }}>
       <button
