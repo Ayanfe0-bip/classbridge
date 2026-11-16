@@ -6,8 +6,8 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 
 type School = {
-id: string;
-name: string;
+  id: string;
+  school_name: string;
 };
 
 type Assignment = {
