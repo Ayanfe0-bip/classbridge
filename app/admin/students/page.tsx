@@ -671,8 +671,7 @@ padding: 25px 16px 45px;
       .student-head h1 {
         font-size: 25px;
       }
-    }
-  `}
+    
     /* PREMIUM STUDENT PORTAL DESIGN */
 
 .student-page {
@@ -943,6 +942,8 @@ padding: 25px 16px 45px;
   .student-actions .student-btn {
     flex: 1;
   }
+    }
+`}
     }</style>
 
   <Link href="/admin" className="student-back">
